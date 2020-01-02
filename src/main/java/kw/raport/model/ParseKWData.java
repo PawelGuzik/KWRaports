@@ -1,14 +1,12 @@
 package kw.raport.model;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
-import javax.annotation.Detainted;
 
 import java.io.File;
 
@@ -16,11 +14,17 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import kw.raport.model.raportData.RaportData;
+import kw.raport.model.raportData.entryInRegister.BasisForTheEntryInRegister;
+import kw.raport.model.raportData.limitedRights.LimitedRights;
+import kw.raport.model.raportData.owner.EntryBasis;
+import kw.raport.model.raportData.plotOfLand.PlotOfLand;
+import kw.raport.model.utils.OwnerProducer;
 
 public class ParseKWData {
 
 	private File inputPage;
-
+	// RaportData collects data extracted from external web page
 	private RaportData raportData;
 
 	private Document doc;
@@ -28,35 +32,41 @@ public class ParseKWData {
 	public ParseKWData(String htmlFileToParse) {
 		setInputPage(htmlFileToParse);
 		raportData = new RaportData();
-		try {
-			doc = Jsoup.parse(inputPage, "UTF-8");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
 	}
 
 	// Processes all the data of a particular KW into RaportData object
-	public void parse() {
-		getPlotsNumbersFromPageSavedAsHtmlFile();
-		getKWNumberFromPageSavedAsHtmlFile();
-		getPlaceOfCourtFromPageSavedAsHtmlFile();
-		getAreaOfProperty();
-		getDateWhenRaportWasGenerated();
+	public void parse(int sectionNumber) {
+		if (sectionNumber == 1) {
+			getPlotsNumbersLocationsAndWayToUseFromPageSavedAsHtmlFile();
+			getKWNumberFromPageSavedAsHtmlFile();
+			getPlaceOfCourtFromPageSavedAsHtmlFile();
+			getAreaOfProperty();
+			getDateWhenRaportWasGenerated();
+			getBasisForEntryInRegister();
+		} else if (sectionNumber == 2) {
+			getOwners();
+			getOwnerEntryBasis();
+		} else if (sectionNumber == 3) {
+			getLimitedRights();
+			getLimitedRightsentryBasis();
+		}
 	}
 
-	// Extracts plots numbers w contained in the land and mortgage register
-	private void getPlotsNumbersFromPageSavedAsHtmlFile() {
+	// Extracts plots numbers contained in the land and mortgage register
+	private void getPlotsNumbersLocationsAndWayToUseFromPageSavedAsHtmlFile() {
 
-		raportData.setNryDzialek(findValuesOfAtributesInCurrentlyOpenSection("Numer działki"));
-
+		raportData.setPlotOfLandList(findAllPlotsOfLand());
 	}
 
+	// Extracts number of the land and mortgage register
 	private void getKWNumberFromPageSavedAsHtmlFile() {
 		Elements header = doc.select("h2");
 		raportData.setNrKW(header.get(0).text().substring(27, 42));
 
 	}
 
+	// Extracts place of court location
 	private void getPlaceOfCourtFromPageSavedAsHtmlFile() {
 		Elements header = doc.select("h4");
 		String placeOfCourt = header.get(0).text().split("SĄD REJONOWY W ")[1].split(", ")[0];
@@ -64,6 +74,7 @@ public class ParseKWData {
 		raportData.setMiejscowoscSadu(placeOfCourt);
 	}
 
+	// Extracts date when the report was created
 	private void getDateWhenRaportWasGenerated() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Elements header = doc.select("h2");
@@ -81,21 +92,191 @@ public class ParseKWData {
 
 	}
 
+	// Extracts area of the entire property
 	private void getAreaOfProperty() {
-		findValuesOfAtributesInCurrentlyOpenSection("Obszar całej nieruchomości");
-		raportData.setPolePowierzchni(findValuesOfAtributesInCurrentlyOpenSection("Obszar całej nieruchomości").get(0));
+		raportData.setPolePowierzchni(
+				findValuesOfAtributesInCurrentlyOpenSection("Obszar całej nieruchomości", 0).get(0));
 	}
 
-	private List<String> findValuesOfAtributesInCurrentlyOpenSection(String atribute) {
+	// Finds cells with given attribute name and extracts it's values from
+	// neighboring cells in the table
+	// columnDistance=0 finds values in the next column, columnDistance=1 finds
+	// values in the second column and so on
+	private List<String> findValuesOfAtributesInCurrentlyOpenSection(String atribute, int columnDistance) {
 		List<String> valuesList = new ArrayList<String>(10);
 		Element content = doc.getElementById("contentDzialu");
 		Elements tableAtributeNames = content.select("td.csDane");
+
 		for (Element atributeName : tableAtributeNames) {
 			if (atributeName.text().contains(atribute)) {
-				valuesList.add(atributeName.nextElementSibling().text());
+				for (int i = 0; i <= columnDistance; i++) {
+
+					atributeName = atributeName.nextElementSibling();
+
+				}
+				valuesList.add(atributeName.text());
 			}
 		}
 		return valuesList;
+	}
+
+	private List<PlotOfLand> findAllPlotsOfLand() {
+		List<PlotOfLand> plotOfLandList = new ArrayList<PlotOfLand>(10);
+		Element content = doc.getElementById("contentDzialu");
+		Elements tableAtributeNames = content.select("td.csDane");
+
+		String number = null;
+		String location = null;
+		String wayToUse = null;
+		for (Element atributeName : tableAtributeNames) {
+
+			if (atributeName.text().contains("Numer działki")) {
+				number = atributeName.nextElementSibling().text();
+				location = atributeName.parent().nextElementSibling().child(3).text();
+				wayToUse = atributeName.parent().nextElementSiblings().get(1).child(1).text();
+			}
+
+			if (number != null) {
+				PlotOfLand plotOfLand = new PlotOfLand(number, location, wayToUse);
+				plotOfLandList.add(plotOfLand);
+				number = null;
+				location = null;
+				wayToUse = null;
+			}
+		}
+		return plotOfLandList;
+	}
+
+	private void getBasisForEntryInRegister() {
+
+		List<BasisForTheEntryInRegister> basisForTheEntryInRegisters = new ArrayList<BasisForTheEntryInRegister>(10);
+		Element content = doc.getElementById("contentDzialu");
+		Elements tableAtributeNames = content.select("td.csNDBDane");
+
+		for (Element element : tableAtributeNames) {
+
+			String name = element.text().split(";|,")[0];
+
+			if (name.contains("MAPA")) {
+
+				String secondElement = element.text().split(";|,")[1].trim();
+				BasisForTheEntryInRegister newEntry = new BasisForTheEntryInRegister(name, null);
+
+				if (secondElement.matches("([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))")) {
+
+					newEntry.setDateOfCreation(secondElement);
+				}
+				basisForTheEntryInRegisters.add(newEntry);
+			}
+		}
+		raportData.setInfOMapach(basisForTheEntryInRegisters);
+
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> void getEntryBasis(List<T> entryBasisList, Elements tableAttributeNames) {
+
+		for (Element element : tableAttributeNames) {
+
+			String[] entryRow = element.text().split("[(]");
+
+			String entryBasisData = entryRow[0];
+			List<String> entryBasisDataList = Arrays.asList(entryBasisData.split("[,;]"));
+
+			String entryBasisDescription = entryRow[1];
+			List<String> entryBasisDescList = Arrays.asList(entryBasisDescription.split("[,;]"));
+			EntryBasis newOwnerEntryBasis = null;
+
+			for (int i = 0; i < entryBasisDescList.size(); i++) {
+				String entryDesc = entryBasisDescList.get(i);
+
+				if (entryDesc.contains("tytuł aktu") || entryDesc.contains("wskazanie podstawy")) {
+
+					newOwnerEntryBasis = new EntryBasis(entryBasisDataList.get(i).trim());
+
+				}
+				if (newOwnerEntryBasis != null) {
+					if (entryDesc.contains("numer rep") || entryDesc.contains("sygnatura")) {
+						newOwnerEntryBasis.setRep(entryBasisDataList.get(i).trim());
+					}
+					if (entryDesc.contains("data sporządzenia") || entryDesc.contains("data wydania")) {
+						SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+						try {
+							newOwnerEntryBasis
+									.setCreationDate(simpleDateFormat.parse(entryBasisDataList.get(i).trim()));
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			entryBasisList.add((T) newOwnerEntryBasis);
+		}
+
+	}
+
+	private void getLimitedRightsentryBasis() {
+		List<EntryBasis> lrEntryBasis = new ArrayList<>();
+		Element content = doc.getElementById("contentDzialu");
+		Elements tableAtributeNames = content.select("td.csNDBDane");
+
+		getEntryBasis(lrEntryBasis, tableAtributeNames);
+
+		raportData.setOgraiczonePrawaPodst(lrEntryBasis);
+	}
+
+	private void getOwnerEntryBasis() {
+		List<EntryBasis> ownerEntryBasis = new ArrayList<>();
+		Element content = doc.getElementById("contentDzialu");
+		Elements tableAtributeNames = content.select("td.csNDBDane");
+
+		getEntryBasis(ownerEntryBasis, tableAtributeNames);
+
+		raportData.setPodstawaWykazaniaWlascicieli(ownerEntryBasis);
+	}
+
+	private void getLimitedRights() {
+		List<LimitedRights> limitedRightsList = new ArrayList<LimitedRights>();
+		List<String> limitedRightsTypes = findValuesOfAtributesInCurrentlyOpenSection("Rodzaj wpisu", 0);// new
+																											// ArrayList<String>();
+		List<String> limitedRightsContent = findValuesOfAtributesInCurrentlyOpenSection("Treść wpisu", 0);
+		for (int i = 0; i < limitedRightsTypes.size(); i++) {
+			LimitedRights limitedRights = new LimitedRights(limitedRightsTypes.get(i), limitedRightsContent.get(i));
+			limitedRightsList.add(limitedRights);
+		}
+		raportData.setOgraniczonePrawa(limitedRightsList);
+		System.out.println(findValuesOfAtributesInCurrentlyOpenSection("Rodzaj wpisu", 0).get(0).toString());
+
+	}
+
+	// Returns List with two Strings, first with names of attributes and second with
+	// attributes of Owners. Main list represents Owners.
+	private List<List<String>> getRawOwnersData() {
+		List<List<String>> rawOwnersData = new ArrayList<List<String>>();
+		Element content = doc.getElementById("contentDzialu");
+		Elements tableContent = content.getElementsContainingOwnText("Właściciele");
+		Elements elementsOfTable = tableContent.get(0).parent().parent().parent().nextElementSibling()
+				.nextElementSibling().child(0).children();
+		for (Element element : elementsOfTable) {
+			Element elementLp = element.getElementsContainingOwnText("Lp. ").first();
+			if (elementLp != null && !(element.text().contains("Lista ws"))) {
+				String description = element.nextElementSibling().nextElementSibling().children().get(0).text();
+
+				String valuesOfOwner = element.nextElementSibling().nextElementSibling().children().get(1).text();
+
+				List<String> ownerData = new ArrayList<String>(2);
+				ownerData.add(description);
+				ownerData.add(valuesOfOwner);
+				rawOwnersData.add(ownerData);
+			}
+
+		}
+		return rawOwnersData;
+	}
+
+	private void getOwners() {
+		raportData.setWlasciciele(OwnerProducer.produce(getRawOwnersData()));
 	}
 
 	public RaportData getRaportData() {
@@ -104,6 +285,11 @@ public class ParseKWData {
 
 	public void setInputPage(String htmlFileToParse) {
 		this.inputPage = new File(htmlFileToParse);
+		try {
+			doc = Jsoup.parse(inputPage, "UTF-8");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

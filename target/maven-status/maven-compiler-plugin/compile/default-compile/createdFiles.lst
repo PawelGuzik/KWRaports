@@ -1,0 +1,9 @@
+kw\raport\model\servlet\RaportServlet.class
+kw\raport\model\raportData\owner\Owner.class
+kw\raport\model\raportData\RaportData.class
+kw\raport\model\ParseKWData.class
+kw\raport\model\raportData\entryInRegister\BasisForTheEntryInRegister.class
+kw\raport\model\raportData\plotOfLand\PlotOfLand.class
+kw\raport\model\browser\RunHeadlessBrowser.class
+kw\raport\model\raportData\owner\OwnerEntryBasis.class
+kw\raport\model\utils\OwnerProducer.class

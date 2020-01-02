@@ -1,7 +1,5 @@
 package kw.raport.model.browser;
 
-import java.util.Random;
-
 import org.apache.commons.lang3.RandomUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -17,18 +15,10 @@ public class RunHeadlessBrowser {
 
 	public void runHeadlessBrowser() throws InterruptedException {
 		setUpBrowserSettings();
-		
+	
 
 	}
-	
-		/*
-		
 
-		
-
-		
-		
-		*/
 	public void callResponseFraoExternalService() {
 		
 	}
@@ -56,7 +46,7 @@ public class RunHeadlessBrowser {
 		
 		System.out.println("Wczytano stron�: " + driver.getTitle().toString());
 		
-		driver.findElement(By.id("kodWydzialuInput")).sendKeys(kodWydziału);
+		driver.findElement(By.id("kodWydzialuInput")).sendKeys(kodWydziału); 
 
 		driver.findElement(By.id("numerKsiegiWieczystej")).sendKeys(numerKW);
 
@@ -91,6 +81,12 @@ public class RunHeadlessBrowser {
 		// driver.findElement(By.name("przyciskWydrukZwykly")).click();
 
 		String result = driver.getPageSource().toString();
+		
+	//	WebElement elementSec2 = driver.findElement(By.xpath("//input[@value='Dział II']"));
+	//	actions.moveToElement(elementSec2).click().perform();
+		WebElement elementSec3 = driver.findElement(By.xpath("//input[@value='Dział III']"));
+		actions.moveToElement(elementSec3).click().perform();
+		result = driver.getPageSource().toString();
 		return result;
 
 	}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<mata name="auhor" content="Paweł Guzik">
+	<meta name='keywords' content='KW, księgi wieczyste, raport'>
+	<meta name="description"
+	content="Serwis do raportowania treści księgi wieczystej wymaganej podczes 
+		badania KW na potrzeby prac geodezyjnych.">
+	<title>Generator raportów z KW</title>
+</head>
+<body>
+	<h1>Generator raportów z KW na potrzeby prac geodezyjnych</h1>
+	<p>Uzupełnij dane księgi wieczystej, z której chcesz wygenerować raport</p>
+	<form action="RaportServlet" method="get">
+	<input type="text" name="kodWydzialu">
+	<input type="number" name="numerKW">
+	<input type="number" name="cyfraKontrolna">
+	<input type="submit" value="generujRaport">
+	</form>
+</body>
+</html>
