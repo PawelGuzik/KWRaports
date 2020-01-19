@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import kw.raport.model.raportData.entryInRegister.BasisForTheEntryInRegister;
 import kw.raport.model.raportData.limitedRights.LimitedRights;
 import kw.raport.model.raportData.owner.Owner;
 import kw.raport.model.raportData.owner.EntryBasis;
@@ -12,24 +11,24 @@ import kw.raport.model.raportData.plotOfLand.PlotOfLand;
 
 public class RaportData {
 
-	private String województwo;
-	private String powiat;
-	private String jednEwid;
-	private String obreb;
-	private String miejscowoscSadu;
-	private Date dataUtworzenia;
-	private String nrKW;
-	private List<String> nryDzialek;
-	private String polePowierzchni;
+	private String voivodenship;
+	private String county;
+	private String landRegistryUnit;
+	private String registrationPrecinct;
+	private String courthouse;
+	private Date creationDate;
+	private String landAndMortgageRegisterNumber;
+	private List<String> plotNumbers;
+	private String realEstateArea;
 	
-	private String rodzajNieruchomosci;
-	private List<BasisForTheEntryInRegister> infOMapach;
-	private List<Owner> wlasciciele;
-	private List<EntryBasis> podstawaWykazaniaWlascicieli;
-	private List<LimitedRights> ograniczonePrawa;
-	private List<EntryBasis> ograiczonePrawaPodst;
-	private String wykonawca;
-	private String nrUprawnien;
+	private String propertyType;
+	private List<EntryBasis> mapInformation;
+	private List<Owner> owners;
+	private List<EntryBasis> ownersEntryBasis;
+	private List<LimitedRights> limitedRights;
+	private List<EntryBasis> limitedRightsEntryBasis;
+	private String author;
+	private String professionalQualificationsNumber;
 	private List<PlotOfLand> plotOfLandList;
 
 	public RaportData() {
@@ -74,239 +73,140 @@ public class RaportData {
 		return false;
 	}
 
-	public String getWojewództwo() {
-		return województwo;
+	public String getVoivodenship() {
+		return voivodenship;
 	}
 
-	public void setWojewództwo(String województwo) {
-		this.województwo = województwo;
+	public void serVoivodenship(String voivodenship) {
+		this.voivodenship = voivodenship;
 	}
 
-	public String getPowiat() {
-		return powiat;
+	public String getCounty() {
+		return county;
 	}
 
-	public void setPowiat(String powiat) {
-		this.powiat = powiat;
+	public void setCounty(String county) {
+		this.county = county;
 	}
 
-	public String getJednEwid() {
-		return jednEwid;
+	public String getLandRegistryUnit() {
+		return landRegistryUnit;
 	}
 
-	public void setJednEwid(String jednEwid) {
-		this.jednEwid = jednEwid;
+	public void setLandRegistryUnit(String landRegistryUnit) {
+		this.landRegistryUnit = landRegistryUnit;
 	}
 
-	public String getObreb() {
-		return obreb;
+	public String getRegistrationPrecinct() {
+		return registrationPrecinct;
 	}
 
-	public void setObreb(String obreb) {
-		this.obreb = obreb;
+	public void setRegistrationPrecinct(String registrationPrecinct) {
+		this.registrationPrecinct = registrationPrecinct;
 	}
 
-	public String getMiejscowoscSadu() {
-		return miejscowoscSadu;
+	public String getCourthouse() {
+		return courthouse;
 	}
 
-	public void setMiejscowoscSadu(String miejscowoscSadu) {
-		this.miejscowoscSadu = miejscowoscSadu;
+	public void setCourthouse(String courthouse) {
+		this.courthouse = courthouse;
 	}
 
-	public Date getDataUtworzenia() {
-		return dataUtworzenia;
+	public Date getCreationDate() {
+		return creationDate;
 	}
 
-	public void setDataUtworzenia(Date dataUtworzenia) {
-		this.dataUtworzenia = dataUtworzenia;
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
 	}
 
-	public String getNrKW() {
-		return nrKW;
+	public String getLandAndMortgageRegisterNumber() {
+		return landAndMortgageRegisterNumber;
 	}
 
-	public void setNrKW(String nrKW) {
-		this.nrKW = nrKW;
+	public void setLandAndMortgageRegisterNumber(String landAndMortgageRegisterNumber) {
+		this.landAndMortgageRegisterNumber = landAndMortgageRegisterNumber;
 	}
 
-	public List<String> getNryDzialek() {
-		return nryDzialek;
+	public List<String> getPlotNumbers() {
+		return plotNumbers;
 	}
 
-	public void setNryDzialek(List<String> nryDzialek) {
-		this.nryDzialek = nryDzialek;
+	public void setPlotNumbers(List<String> plotNumbers) {
+		this.plotNumbers = plotNumbers;
 	}
 
-	public String getPolePowierzchni() {
-		return polePowierzchni;
+	public String getRealEstateArea() {
+		return realEstateArea;
 	}
 
-	public void setPolePowierzchni(String polePowierzchni) {
-		this.polePowierzchni = polePowierzchni;
+	public void setRealEstateArea(String realEstateArea) {
+		this.realEstateArea = realEstateArea;
 	}
 
-
-
-	public String getRodzajNieruchomosci() {
-		return rodzajNieruchomosci;
+	public String getPropertyType() {
+		return propertyType;
 	}
 
-	public void setRodzajNieruchomosci(String rodzajNieruchomosci) {
-		this.rodzajNieruchomosci = rodzajNieruchomosci;
+	public void stePropertyType(String propertyType) {
+		this.propertyType = propertyType;
 	}
 
-	public List<BasisForTheEntryInRegister> getInfOMapach() {
-		return infOMapach;
+	public List<EntryBasis> getMapInformation() {
+		return mapInformation;
 	}
 
-	public void setInfOMapach(List<BasisForTheEntryInRegister> infOMapach) {
-		this.infOMapach = infOMapach;
+	public void setMapInformation(List<EntryBasis> mapInformation) {
+		this.mapInformation = mapInformation;
 	}
 
-	public List<Owner> getWlasciciele() {
-		return wlasciciele;
+	public List<Owner> getOwners() {
+		return owners;
 	}
 
-	public void setWlasciciele(List<Owner> wlasciciele) {
-		this.wlasciciele = wlasciciele;
+	public void setOwners(List<Owner> owners) {
+		this.owners = owners;
 	}
 
-	public List<EntryBasis> getPodstawaWykazaniaWlascicieli() {
-		return podstawaWykazaniaWlascicieli;
+	public List<EntryBasis> getOwnerEntryBasis() {
+		return ownersEntryBasis;
 	}
 
-	public void setPodstawaWykazaniaWlascicieli(List<EntryBasis> podstawaWykazaniaWlascicieli) {
-		this.podstawaWykazaniaWlascicieli = podstawaWykazaniaWlascicieli;
+	public void setOwnerEntryBasis(List<EntryBasis> ownersEntryBasis) {
+		this.ownersEntryBasis = ownersEntryBasis;
 	}
 
-	public List<LimitedRights> getOgraniczonePrawa() {
-		return ograniczonePrawa;
+	public List<LimitedRights> getLimitedRights() {
+		return limitedRights;
 	}
 
-	public void setOgraniczonePrawa(List<LimitedRights> ograniczonePrawa) {
-		this.ograniczonePrawa = ograniczonePrawa;
+	public void setLimitedRights(List<LimitedRights> limitedRights) {
+		this.limitedRights = limitedRights;
 	}
 
-	public List<EntryBasis> getOgraiczonePrawaPodst() {
-		return ograiczonePrawaPodst;
+	public List<EntryBasis> getLimitedRightsEntryBasis() {
+		return limitedRightsEntryBasis;
 	}
 
-	public void setOgraiczonePrawaPodst(List<EntryBasis> ograiczonePrawaPodst) {
-		this.ograiczonePrawaPodst = ograiczonePrawaPodst;
+	public void setLimitedRightsEntryBasis(List<EntryBasis> limitedRightsEntryBasis) {
+		this.limitedRightsEntryBasis = limitedRightsEntryBasis;
 	}
 
-	public String getWykonawca() {
-		return wykonawca;
+	public String getAuthor() {
+		return author;
 	}
 
-	public void setWykonawca(String wykonawca) {
-		this.wykonawca = wykonawca;
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 
-	public String getNrUprawnien() {
-		return nrUprawnien;
+	public String getprofessionalQualificationsNumber() {
+		return professionalQualificationsNumber;
 	}
 
-	public void setNrUprawnien(String nrUprawnien) {
-		this.nrUprawnien = nrUprawnien;
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("RaportData [");
-		if (województwo != null) {
-			builder.append("województwo=");
-			builder.append(województwo);
-			builder.append(", ");
-		}
-		if (powiat != null) {
-			builder.append("powiat=");
-			builder.append(powiat);
-			builder.append(", ");
-		}
-		if (jednEwid != null) {
-			builder.append("jednEwid=");
-			builder.append(jednEwid);
-			builder.append(", ");
-		}
-		if (obreb != null) {
-			builder.append("obreb=");
-			builder.append(obreb);
-			builder.append(", ");
-		}
-		if (miejscowoscSadu != null) {
-			builder.append("miejscowoscSadu=");
-			builder.append(miejscowoscSadu);
-			builder.append(", ");
-		}
-		if (dataUtworzenia != null) {
-			builder.append("dataUtworzenia=");
-			builder.append(dataUtworzenia);
-			builder.append(", ");
-		}
-		if (nrKW != null) {
-			builder.append("nrKW=");
-			builder.append(nrKW);
-			builder.append(", ");
-		}
-		if (nryDzialek != null) {
-			builder.append("nryDzialek=");
-			builder.append(nryDzialek);
-			builder.append(", ");
-		}
-		if (polePowierzchni != null) {
-			builder.append("polePowierzchni=");
-			builder.append(polePowierzchni);
-			builder.append(", ");
-		}
-		if (rodzajNieruchomosci != null) {
-			builder.append("rodzajNieruchomosci=");
-			builder.append(rodzajNieruchomosci);
-			builder.append(", ");
-		}
-		if (infOMapach != null) {
-			builder.append("infOMapach=");
-			builder.append(infOMapach);
-			builder.append(", ");
-		}
-		if (wlasciciele != null) {
-			builder.append("wlasciciele=");
-			builder.append(wlasciciele);
-			builder.append(", ");
-		}
-		if (podstawaWykazaniaWlascicieli != null) {
-			builder.append("podstawaWykazaniaWlascicieli=");
-			builder.append(podstawaWykazaniaWlascicieli);
-			builder.append(", ");
-		}
-		if (ograniczonePrawa != null) {
-			builder.append("ograniczonePrawa=");
-			builder.append(ograniczonePrawa);
-			builder.append(", ");
-		}
-		if (ograiczonePrawaPodst != null) {
-			builder.append("ograiczonePrawaPodst=");
-			builder.append(ograiczonePrawaPodst);
-			builder.append(", ");
-		}
-		if (wykonawca != null) {
-			builder.append("wykonawca=");
-			builder.append(wykonawca);
-			builder.append(", ");
-		}
-		if (nrUprawnien != null) {
-			builder.append("nrUprawnien=");
-			builder.append(nrUprawnien);
-			builder.append(", ");
-		}
-		if (plotOfLandList != null) {
-			builder.append("plotOfLandList=");
-			builder.append(plotOfLandList);
-		}
-		builder.append("]");
-		return builder.toString();
+	public void setprofessionalQualificationsNumber(String professionalQualificationsNumber) {
+		this.professionalQualificationsNumber = professionalQualificationsNumber;
 	}
 
 	public List<PlotOfLand> getPlotOfLandList() {
@@ -315,6 +215,103 @@ public class RaportData {
 
 	public void setPlotOfLandList(List<PlotOfLand> plotOfLandList) {
 		this.plotOfLandList = plotOfLandList;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("RaportData [");
+		if (voivodenship != null) {
+			builder.append("voivodenship=");
+			builder.append(voivodenship);
+			builder.append(", ");
+		}
+		if (county != null) {
+			builder.append("county=");
+			builder.append(county);
+			builder.append(", ");
+		}
+		if (landRegistryUnit != null) {
+			builder.append("landRegistryUnit=");
+			builder.append(landRegistryUnit);
+			builder.append(", ");
+		}
+		if (registrationPrecinct != null) {
+			builder.append("registrationPrecinct=");
+			builder.append(registrationPrecinct);
+			builder.append(", ");
+		}
+		if (courthouse != null) {
+			builder.append("courthouse=");
+			builder.append(courthouse);
+			builder.append(", ");
+		}
+		if (creationDate != null) {
+			builder.append("creationDate=");
+			builder.append(creationDate);
+			builder.append(", ");
+		}
+		if (landAndMortgageRegisterNumber != null) {
+			builder.append("landAndMortgageRegisterNumber=");
+			builder.append(landAndMortgageRegisterNumber);
+			builder.append(", ");
+		}
+		if (plotNumbers != null) {
+			builder.append("plotNumbers=");
+			builder.append(plotNumbers);
+			builder.append(", ");
+		}
+		if (realEstateArea != null) {
+			builder.append("realEstateArea=");
+			builder.append(realEstateArea);
+			builder.append(", ");
+		}
+		if (propertyType != null) {
+			builder.append("propertyType=");
+			builder.append(propertyType);
+			builder.append(", ");
+		}
+		if (mapInformation != null) {
+			builder.append("mapInformation=");
+			builder.append(mapInformation);
+			builder.append(", ");
+		}
+		if (owners != null) {
+			builder.append("owners=");
+			builder.append(owners);
+			builder.append(", ");
+		}
+		if (ownersEntryBasis != null) {
+			builder.append("ownersEntryBasis=");
+			builder.append(ownersEntryBasis);
+			builder.append(", ");
+		}
+		if (limitedRights != null) {
+			builder.append("limitedRights=");
+			builder.append(limitedRights);
+			builder.append(", ");
+		}
+		if (limitedRightsEntryBasis != null) {
+			builder.append("limitedRightsEntryBasis=");
+			builder.append(limitedRightsEntryBasis);
+			builder.append(", ");
+		}
+		if (author != null) {
+			builder.append("author=");
+			builder.append(author);
+			builder.append(", ");
+		}
+		if (professionalQualificationsNumber != null) {
+			builder.append("professionalQualificationsNumber=");
+			builder.append(professionalQualificationsNumber);
+			builder.append(", ");
+		}
+		if (plotOfLandList != null) {
+			builder.append("plotOfLandList=");
+			builder.append(plotOfLandList);
+		}
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

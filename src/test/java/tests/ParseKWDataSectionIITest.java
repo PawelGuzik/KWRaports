@@ -28,20 +28,20 @@ static ParseKWData parse;
 	@Test
 	public void shouldReturnRawOwnersData() {
 		assertTrue(parse.getRaportData().toString()!=null);
-		assertThat(parse.getRaportData().getWlasciciele().get(0).getName(), equalTo("JADWIGA"));
+		assertThat(parse.getRaportData().getOwners().get(0).getName(), equalTo("JADWIGA"));
 	}
 	 
 	@Test 
 	public void shouldReturnProperOwnersData() {
 		
-		Owner owner1 = parse.getRaportData().getWlasciciele().get(0);
+		Owner owner1 = parse.getRaportData().getOwners().get(0);
 		assertThat(owner1.getName(), equalTo("JADWIGA"));
 		assertThat(owner1.getSecondName(), equalTo("JOLANTA"));
 		assertThat(owner1.getSurname(), equalTo("GÓRNIEWSKA"));
 		assertThat(owner1.getNamesOfParents(), equalTo("RYSZARD, WACŁAWA"));
 		assertThat(owner1.getNumberOfPesel(), equalTo(0L));
 
-		Owner owner4 = parse.getRaportData().getWlasciciele().get(3);
+		Owner owner4 = parse.getRaportData().getOwners().get(3);
 		assertThat(owner4.getName(), equalTo("MARIUSZ"));
 		assertThat(owner4.getSecondName(), equalTo("ŁUKASZ"));
 		assertThat(owner4.getSurname(), equalTo("GÓRNIEWSKI"));
@@ -52,23 +52,23 @@ static ParseKWData parse;
 	
 	@Test
 	public void sizeOfOwnersListShouldBe4() {
-		assertThat(parse.getRaportData().getWlasciciele().size(), equalTo(4));
+		assertThat(parse.getRaportData().getOwners().size(), equalTo(4));
 	}
 	
 	@Test 
 	public void sizeOfOwnerEntryBasisListShouldBe2(){
-		assertThat(parse.getRaportData().getPodstawaWykazaniaWlascicieli().size(), equalTo(2));
+		assertThat(parse.getRaportData().getOwnerEntryBasis().size(), equalTo(2));
 	}
 	
 	@Test
 	public void shouldReturnProperDataFromsavedPage() throws ParseException {
 		
-		EntryBasis ownerEntryBasis = parse.getRaportData().getPodstawaWykazaniaWlascicieli().get(0);
+		EntryBasis ownerEntryBasis = parse.getRaportData().getOwnerEntryBasis().get(0);
 		assertThat(ownerEntryBasis.getTitle(), equalTo("UMOWA PRZEKAZANIA GOSPODARSTWA ROLNEGO"));
 		assertThat(ownerEntryBasis.getRep(), equalTo("348/88"));
 		assertThat(ownerEntryBasis.getCreationDate(), equalTo(DateUtils.parseDate("1988-01-27", "yyyy-MM-dd")));
 		
-		EntryBasis ownerEntryBasis2 = parse.getRaportData().getPodstawaWykazaniaWlascicieli().get(1);
+		EntryBasis ownerEntryBasis2 = parse.getRaportData().getOwnerEntryBasis().get(1);
 		assertThat(ownerEntryBasis2.getTitle(), equalTo("AKT POŚWIADCZENIA DZIEDZICZENIA"));
 		assertThat(ownerEntryBasis2.getRep(), equalTo("REPRTORIUM A NR 2582/2018"));
 		assertThat(ownerEntryBasis2.getCreationDate(), equalTo(DateUtils.parseDate("2018-08-09", "yyyy-MM-dd")));

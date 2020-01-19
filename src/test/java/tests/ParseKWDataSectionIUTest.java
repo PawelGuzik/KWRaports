@@ -7,6 +7,8 @@ import java.text.ParseException;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import kw.raport.model.ParseKWData;
 
@@ -33,23 +35,23 @@ public class ParseKWDataSectionIUTest {
 	
 	@Test
 	public void shouldReturnKWNumber() {
-		assertTrue(parse.getRaportData().getNrKW().equals("PL1Z/00002121/0"));
+		assertTrue(parse.getRaportData().getLandAndMortgageRegisterNumber().equals("PL1Z/00002121/0"));
 		
 	}
 	
 	@Test
 	public void shouldReturnPlaceOfCourt() {
-		assertTrue(parse.getRaportData().getMiejscowoscSadu().equals("ŻYRARDOWIE"));
+		assertTrue(parse.getRaportData().getCourthouse().equals("ŻYRARDOWIE"));
 	}
 
 	@Test
 	public void shouldReturnAreaValue(){
-		assertTrue(parse.getRaportData().getPolePowierzchni().equals("0,3012 HA"));
+		assertTrue(parse.getRaportData().getRealEstateArea().equals("0,3012 HA"));
 	}
 	
 	@Test
 	public void shouldReturnDateOfCreation() throws ParseException {
-		assertTrue(parse.getRaportData().getDataUtworzenia().equals(DateUtils.parseDate("2019-12-04", "yyyy-MM-dd")));
+		assertTrue(parse.getRaportData().getCreationDate().equals(DateUtils.parseDate("2019-12-04", "yyyy-MM-dd")));
 	}
 	
 	@Test
@@ -69,17 +71,24 @@ public class ParseKWDataSectionIUTest {
 	}
 	
 	@Test
-	public void shouldReturnBasisForTheEntryInRegister() {
-		assertTrue(parse.getRaportData().getInfOMapach().size()==9);
+	public void shouldReturnBasisForTheEntryInRegister() throws ParseException {
+		for (int i =0; i<=8; i++) {
+			System.out.println("To ja " + parse.getRaportData().getMapInformation().get(i).getTitle().toString());
+		}
 		
-		
-		assertTrue(parse.getRaportData().getInfOMapach().get(0).getName().equals("OPIS I MAPA"));
-		assertTrue(parse.getRaportData().getInfOMapach().get(7).getName().equals("MAPA SYTUACYJNA"));
-		assertTrue(parse.getRaportData().getInfOMapach().get(7).getDateOfCreation().equals("2004-03-22"));
+
+		assertThat(parse.getRaportData().getMapInformation().size(), equalTo(9));
+	//	assertTrue(parse.getRaportData().getInfOMapach().size()==9);
 
 
 		
+		assertTrue(parse.getRaportData().getMapInformation().get(0).getTitle().equals("OPIS I MAPA"));
+		assertTrue(parse.getRaportData().getMapInformation().get(7).getTitle().equals("MAPA SYTUACYJNA"));
+		assertTrue(parse.getRaportData().getMapInformation().get(7).getCreationDate().equals(DateUtils.parseDate("2004-03-22", "yyyy-MM-dd")));
 
+
+		
+		
 	}
 	
 	

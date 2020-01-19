@@ -15,18 +15,17 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import kw.raport.model.raportData.RaportData;
-import kw.raport.model.raportData.entryInRegister.BasisForTheEntryInRegister;
 import kw.raport.model.raportData.limitedRights.LimitedRights;
 import kw.raport.model.raportData.owner.EntryBasis;
 import kw.raport.model.raportData.plotOfLand.PlotOfLand;
 import kw.raport.model.utils.OwnerProducer;
 
 public class ParseKWData {
-
+	//Web page saved as HTML
 	private File inputPage;
 	// RaportData collects data extracted from external web page
 	private RaportData raportData;
-
+	//Represents web page as Document
 	private Document doc;
 
 	public ParseKWData(String htmlFileToParse) {
@@ -43,7 +42,7 @@ public class ParseKWData {
 			getPlaceOfCourtFromPageSavedAsHtmlFile();
 			getAreaOfProperty();
 			getDateWhenRaportWasGenerated();
-			getBasisForEntryInRegister();
+			getBasisForEntryInRegister2();
 		} else if (sectionNumber == 2) {
 			getOwners();
 			getOwnerEntryBasis();
@@ -62,7 +61,7 @@ public class ParseKWData {
 	// Extracts number of the land and mortgage register
 	private void getKWNumberFromPageSavedAsHtmlFile() {
 		Elements header = doc.select("h2");
-		raportData.setNrKW(header.get(0).text().substring(27, 42));
+		raportData.setLandAndMortgageRegisterNumber(header.get(0).text().substring(27, 42));
 
 	}
 
@@ -71,7 +70,7 @@ public class ParseKWData {
 		Elements header = doc.select("h4");
 		String placeOfCourt = header.get(0).text().split("SĄD REJONOWY W ")[1].split(", ")[0];
 
-		raportData.setMiejscowoscSadu(placeOfCourt);
+		raportData.setCourthouse(placeOfCourt);
 	}
 
 	// Extracts date when the report was created
@@ -88,13 +87,13 @@ public class ParseKWData {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		raportData.setDataUtworzenia(date);
+		raportData.setCreationDate(date);
 
 	}
 
 	// Extracts area of the entire property
 	private void getAreaOfProperty() {
-		raportData.setPolePowierzchni(
+		raportData.setRealEstateArea(
 				findValuesOfAtributesInCurrentlyOpenSection("Obszar całej nieruchomości", 0).get(0));
 	}
 
@@ -147,31 +146,6 @@ public class ParseKWData {
 		return plotOfLandList;
 	}
 
-	private void getBasisForEntryInRegister() {
-
-		List<BasisForTheEntryInRegister> basisForTheEntryInRegisters = new ArrayList<BasisForTheEntryInRegister>(10);
-		Element content = doc.getElementById("contentDzialu");
-		Elements tableAtributeNames = content.select("td.csNDBDane");
-
-		for (Element element : tableAtributeNames) {
-
-			String name = element.text().split(";|,")[0];
-
-			if (name.contains("MAPA")) {
-
-				String secondElement = element.text().split(";|,")[1].trim();
-				BasisForTheEntryInRegister newEntry = new BasisForTheEntryInRegister(name, null);
-
-				if (secondElement.matches("([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))")) {
-
-					newEntry.setDateOfCreation(secondElement);
-				}
-				basisForTheEntryInRegisters.add(newEntry);
-			}
-		}
-		raportData.setInfOMapach(basisForTheEntryInRegisters);
-
-	}
 
 	@SuppressWarnings("unchecked")
 	private <T> void getEntryBasis(List<T> entryBasisList, Elements tableAttributeNames) {
@@ -190,10 +164,9 @@ public class ParseKWData {
 			for (int i = 0; i < entryBasisDescList.size(); i++) {
 				String entryDesc = entryBasisDescList.get(i);
 
-				if (entryDesc.contains("tytuł aktu") || entryDesc.contains("wskazanie podstawy")) {
+				if (entryDesc.contains("tytuł aktu") || entryDesc.contains("wskazanie podstawy") || entryDesc.contains("podstawa oznaczenia")) {
 
 					newOwnerEntryBasis = new EntryBasis(entryBasisDataList.get(i).trim());
-
 				}
 				if (newOwnerEntryBasis != null) {
 					if (entryDesc.contains("numer rep") || entryDesc.contains("sygnatura")) {
@@ -215,25 +188,48 @@ public class ParseKWData {
 		}
 
 	}
+	
+	private Elements getTableAttributeNames() {
+		Element content = doc.getElementById("contentDzialu");
+		Elements tableAtributeNames = content.select("td.csNDBDane");
+		return tableAtributeNames;
+		
+	}
+	
+	private void getBasisForEntryInRegister2() {
+		List<EntryBasis> lrEntryBasis = new ArrayList<>();
+		Elements tableAtributeNames = getTableAttributeNames();
+		
+		getEntryBasis(lrEntryBasis, tableAtributeNames);
+		for (int i =0; i< lrEntryBasis.size(); i++) {
+			
+			if(!lrEntryBasis.get(i).getTitle().contains("MAPA")) {
+				
+				lrEntryBasis.remove(i);
+				i--;
+			}
+			
+		}
+		raportData.setMapInformation(lrEntryBasis);
+		
+	}
 
 	private void getLimitedRightsentryBasis() {
 		List<EntryBasis> lrEntryBasis = new ArrayList<>();
-		Element content = doc.getElementById("contentDzialu");
-		Elements tableAtributeNames = content.select("td.csNDBDane");
+		Elements tableAtributeNames = getTableAttributeNames();
 
 		getEntryBasis(lrEntryBasis, tableAtributeNames);
 
-		raportData.setOgraiczonePrawaPodst(lrEntryBasis);
+		raportData.setLimitedRightsEntryBasis(lrEntryBasis);
 	}
 
 	private void getOwnerEntryBasis() {
 		List<EntryBasis> ownerEntryBasis = new ArrayList<>();
-		Element content = doc.getElementById("contentDzialu");
-		Elements tableAtributeNames = content.select("td.csNDBDane");
+		Elements tableAtributeNames = getTableAttributeNames();
 
 		getEntryBasis(ownerEntryBasis, tableAtributeNames);
 
-		raportData.setPodstawaWykazaniaWlascicieli(ownerEntryBasis);
+		raportData.setOwnerEntryBasis(ownerEntryBasis);
 	}
 
 	private void getLimitedRights() {
@@ -245,7 +241,7 @@ public class ParseKWData {
 			LimitedRights limitedRights = new LimitedRights(limitedRightsTypes.get(i), limitedRightsContent.get(i));
 			limitedRightsList.add(limitedRights);
 		}
-		raportData.setOgraniczonePrawa(limitedRightsList);
+		raportData.setLimitedRights(limitedRightsList);
 		System.out.println(findValuesOfAtributesInCurrentlyOpenSection("Rodzaj wpisu", 0).get(0).toString());
 
 	}
@@ -276,7 +272,7 @@ public class ParseKWData {
 	}
 
 	private void getOwners() {
-		raportData.setWlasciciele(OwnerProducer.produce(getRawOwnersData()));
+		raportData.setOwners(OwnerProducer.produce(getRawOwnersData()));
 	}
 
 	public RaportData getRaportData() {
