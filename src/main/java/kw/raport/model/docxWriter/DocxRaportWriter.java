@@ -12,34 +12,28 @@ import org.docx4j.jaxb.Context;
 import org.docx4j.model.structure.PageSizePaper;
 import org.docx4j.model.table.TblFactory;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
-import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.wml.Body;
 import org.docx4j.wml.BooleanDefaultTrue;
-import org.docx4j.wml.CTBookmark;
 import org.docx4j.wml.CTColumns;
-import org.docx4j.wml.CTMarkupRange;
 import org.docx4j.wml.CTTabStop;
+import org.docx4j.wml.CTVerticalJc;
 import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.HpsMeasure;
 import org.docx4j.wml.Jc;
+import org.docx4j.wml.JcEnumeration;
 import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.P;
 import org.docx4j.wml.PPr;
 import org.docx4j.wml.PPrBase;
-import org.docx4j.wml.PPrBase.PStyle;
 import org.docx4j.wml.ParaRPr;
 import org.docx4j.wml.R;
-import org.docx4j.wml.R.Tab;
 import org.docx4j.wml.RFonts;
 import org.docx4j.wml.RPr;
-import org.docx4j.wml.STTabJc;
-import org.docx4j.wml.STTabTlc;
-import org.docx4j.wml.STTheme;
+import org.docx4j.wml.STVerticalJc;
 import org.docx4j.wml.SectPr;
 import org.docx4j.wml.Tbl;
-import org.docx4j.wml.TblWidth;
 import org.docx4j.wml.Tc;
 import org.docx4j.wml.TcPr;
 import org.docx4j.wml.TcPrInner.HMerge;
@@ -62,11 +56,11 @@ public class DocxRaportWriter {
 			setMarigins();
 			File exportFile = new File("welcome.docx");
 
-			createLocationDescription( "Województwo: ");
-			createLocationDescription( "Powiat: ");
-			createLocationDescription( "Jednostka ewidencyjna: ");
-			createLocationDescription( "Obręb: - nazwa: ");
-			createLocationDescription( "numer: ");
+			addLocationDescriptionLine( "Województwo: ");
+			addLocationDescriptionLine( "Powiat: ");
+			addLocationDescriptionLine( "Jednostka ewidencyjna: ");
+			addLocationDescriptionLine( "Obręb: - nazwa: ");
+			addLocationDescriptionLine( "numer: ");
 			
 			int writableWidthTwips = wordPackage.getDocumentModel().getSections().get(0).getPageDimensions()
 					.getWritableWidthTwips();
@@ -81,6 +75,50 @@ public class DocxRaportWriter {
 			mergeCellsVertically(tbl, 6, 0, 1);
 			mergeCellsVertically(tbl, 10, 0, 1);
 			
+			writeTextInCell("Lp.", tbl, 0, 0, JcEnumeration.CENTER);
+			writeTextInCell("1", tbl, 2, 0, JcEnumeration.CENTER);
+
+			writeTextInCell("DZIAŁ I", tbl, 0, 1, JcEnumeration.CENTER);
+			writeTextInCell("Numer księgi wieczystej lub zbioru dokumentów", tbl, 1, 1, JcEnumeration.CENTER);
+				writeTextInCell("Nazwa nieruchomości", tbl, 1, 1, JcEnumeration.CENTER);
+			writeTextInCell("2", tbl, 2, 1, JcEnumeration.CENTER);
+
+			writeTextInCell("Numer działki", tbl, 1, 2, JcEnumeration.CENTER);
+			writeTextInCell("3", tbl, 2, 2, JcEnumeration.CENTER);
+			writeTextInCell("Pole powierzchni", tbl, 1, 3, JcEnumeration.CENTER);
+			writeTextInCell("4", tbl, 2, 3, JcEnumeration.CENTER);
+			
+			writeTextInCell("Położenie", tbl, 0, 4, JcEnumeration.CENTER);
+				writeTextInCell("nieruchomości i inne informacje o sposobie wykorzystania", tbl, 0, 4, JcEnumeration.CENTER);
+			writeTextInCell("5", tbl, 2, 4, JcEnumeration.CENTER);
+
+			writeTextInCell("Rodzaj nieruchomości", tbl, 0, 5, JcEnumeration.CENTER);
+			writeTextInCell("6", tbl, 2, 5, JcEnumeration.CENTER);
+
+			writeTextInCell("Informacje o mapach", tbl, 0, 6, JcEnumeration.CENTER);
+			writeTextInCell("7", tbl, 2, 6, JcEnumeration.CENTER);
+			
+			writeTextInCell("DZIAŁ II", tbl, 0, 7, JcEnumeration.CENTER);
+			writeTextInCell("1.Właściciel", tbl, 1, 7, JcEnumeration.CENTER);
+				writeTextInCell("2.Wieczysty użytkownik", tbl, 1, 7, JcEnumeration.CENTER);
+				writeTextInCell("-----------------------------", tbl, 1, 7, JcEnumeration.CENTER);
+				writeTextInCell("Imię i nazwisko, imiona rodziców lub nazwa osoby prawnej, adres", tbl, 1, 7, JcEnumeration.CENTER);
+			writeTextInCell("8", tbl, 2, 7, JcEnumeration.CENTER);
+				
+			writeTextInCell("Podstawa ustalenia danych wym.", tbl, 1, 8, JcEnumeration.CENTER);
+				writeTextInCell("w kol. 8", tbl, 1, 8, JcEnumeration.CENTER);
+			writeTextInCell("9", tbl, 2, 8, JcEnumeration.CENTER);
+			
+			writeTextInCell("DZIAŁ III", tbl, 0, 9, JcEnumeration.CENTER);
+			writeTextInCell("Rodzaj ograniczonych", tbl, 1, 9, JcEnumeration.CENTER);
+				writeTextInCell("praw rzeczowych", tbl, 1, 9, JcEnumeration.CENTER);
+				writeTextInCell("-----------------------", tbl, 1, 9, JcEnumeration.CENTER);
+				writeTextInCell("Podstawa wpisu", tbl, 1, 9, JcEnumeration.CENTER);
+			writeTextInCell("10", tbl, 2, 9, JcEnumeration.CENTER);
+
+			writeTextInCell("UWAGI", tbl, 0, 10, JcEnumeration.CENTER);
+			writeTextInCell("11", tbl, 2, 10, JcEnumeration.CENTER);
+			
 			createTitle();
 
 			mainDocumentPart.getContent().add(tbl);
@@ -90,76 +128,136 @@ public class DocxRaportWriter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return 0;
-
 	}
 	
-
-
-	public static void createLocationDescription( String nameOfDescAttribute) {
-
-		// Create object for p
+	private static void writeTextInCell(String text, Tbl table, int tacleRow, int tableColumn, JcEnumeration position) {
+		
+		Tc tableCell = getTc(table, tacleRow, tableColumn);
+		CTVerticalJc ctVerticalJc = wmlObjectFactory.createCTVerticalJc();
+		ctVerticalJc.setVal(STVerticalJc.CENTER);
+		tableCell.getTcPr().setVAlign(ctVerticalJc);
 		P p = wmlObjectFactory.createP();
-		body.getContent().add(p);
-		// Create object for pPr
+		R r  = wmlObjectFactory.createR();
+		p.getContent().add(r);
+		setFontProperties(r, "Times New Roman", 16);
+		writeTextInP(r, text);
+		setHorizontalTextPosition(p, position);
+		P toOwerwriteIfNull = (P)tableCell.getContent().get(0);
+		
+		if(checkIfPHasAllFieldsNull(toOwerwriteIfNull)&& tableCell.getContent().size()==1) {
+		tableCell.getContent().set(0, p);
+		}else {
+			tableCell.getContent().add(p);
+		}
+		
+	}
+	
+	private static boolean checkIfPHasAllFieldsNull(P pToCheck) {
+		return (pToCheck.getParaId()==null
+				&& pToCheck.getPPr()==null
+				&& pToCheck.getRsidDel()==null
+				&& pToCheck.getRsidP()==null
+				&& pToCheck.getRsidR()==null
+				&& pToCheck.getRsidRDefault()==null
+				&& pToCheck.getRsidRPr()==null
+				&& pToCheck.getTextId()==null);
+	}
+	
+	private static P writeLine(String text, String fontName, int fontSize) {
+		
+		P p = wmlObjectFactory.createP();	
+		R r = wmlObjectFactory.createR();
+		
+		p.getContent().add(r);
+		
+		setFontProperties(r, "Times New Roman", 28);
+		
+		writeTabInP(r);
+		writeTextInP(r, text);
+		writeTabInP(r);
+	
+		return p;
+	}
+	
+	private static void setFontProperties(R r,String fontName, int fontSize) {
+		
+		RFonts rFonts = wmlObjectFactory.createRFonts();
+        rFonts.setAscii(fontName);
+        rFonts.setHAnsi(fontName);
+        
+        RPr rPr = wmlObjectFactory.createRPr();
+		
+		//Create object for font size
+		   HpsMeasure hpsmeasure = wmlObjectFactory.createHpsMeasure(); 
+		hpsmeasure.setVal(BigInteger.valueOf(fontSize));
+		
+		//Set font size and type
+		rPr.setSz(hpsmeasure);
+		rPr.setRFonts(rFonts);
+		r.setRPr(rPr);
+	}
+	
+	private static void setHorizontalTextPosition(P p, JcEnumeration position ) {
+		
+		PPr pPr = wmlObjectFactory.createPPr();
+		
+		 Jc jc = wmlObjectFactory.createJc(); 
+         pPr.setJc(jc); 
+             jc.setVal(position);
+             
+             p.setPPr(pPr);
+	}
+	
+	private static P setPropertiesForTabs(P p, int leftTabInTwips, int rightTabInTwips) {
+		
 		PPr ppr = wmlObjectFactory.createPPr();
 		p.setPPr(ppr);
 		
-		 RFonts rFonts = wmlObjectFactory.createRFonts();
-         rFonts.setAscii("Times New Roman");
-         rFonts.setHAnsi("Times New Roman");
-		
-	
 		// Create object for tabs
-		Tabs tabs = wmlObjectFactory.createTabs();
-		ppr.setTabs(tabs);
+				Tabs tabs = wmlObjectFactory.createTabs();
+				ppr.setTabs(tabs);
+				//create single tab - LEFT
+				CTTabStop tabstop = wmlObjectFactory.createCTTabStop();
+				tabs.getTab().add(tabstop);
+				tabstop.setPos(BigInteger.valueOf(leftTabInTwips));
+				tabstop.setVal(org.docx4j.wml.STTabJc.LEFT);
+				
+				//create single tab - RIGHT
+				CTTabStop tabstop2 = wmlObjectFactory.createCTTabStop();
+				tabs.getTab().add(tabstop2);
+				tabstop2.setPos(BigInteger.valueOf(15450));
+				tabstop2.setVal(org.docx4j.wml.STTabJc.RIGHT);
+				tabstop2.setLeader(org.docx4j.wml.STTabTlc.DOT);
+		
+		return p;	
+	}
+	
+	private static void writeTextInP(R r, String textToWrite) {
+		
+		Text text = wmlObjectFactory.createText();
+		JAXBElement<org.docx4j.wml.Text> textWrapped = wmlObjectFactory.createRT(text);
+		r.getContent().add(textWrapped);
+		text.setValue(textToWrite);
 		
 		
-		// Create object for tab
-		CTTabStop tabstop = wmlObjectFactory.createCTTabStop();
-		tabs.getTab().add(tabstop);
-		tabstop.setPos(BigInteger.valueOf(10206));
-		tabstop.setVal(org.docx4j.wml.STTabJc.LEFT);
-		// Create object for tab
-		CTTabStop tabstop2 = wmlObjectFactory.createCTTabStop();
-		tabs.getTab().add(tabstop2);
-		tabstop2.setPos(BigInteger.valueOf(15450));
-		tabstop2.setVal(org.docx4j.wml.STTabJc.RIGHT);
-		tabstop2.setLeader(org.docx4j.wml.STTabTlc.DOT);
-		// Create object for r
-		R r = wmlObjectFactory.createR();
-		p.getContent().add(r);
-		RPr rPr = wmlObjectFactory.createRPr();
-		rPr.setRFonts(rFonts);
-		   HpsMeasure hpsmeasure = wmlObjectFactory.createHpsMeasure(); 
-		hpsmeasure.setVal(BigInteger.valueOf(24));
-		rPr.setSz(hpsmeasure);
-		r.setRPr(rPr);
-		// Create object for tab (wrapped in JAXBElement)
+	}
+	
+	private static void writeTabInP(R r) {
 		R.Tab rtab = wmlObjectFactory.createRTab();
 		JAXBElement<org.docx4j.wml.R.Tab> rtabWrapped = wmlObjectFactory.createRTab(rtab);
 		r.getContent().add(rtabWrapped);
-		// Create object for t (wrapped in JAXBElement)
-		Text text = wmlObjectFactory.createText();
+	}
+	
+	public static void addLocationDescriptionLine( String nameOfDescAttribute) {
 		
-		JAXBElement<org.docx4j.wml.Text> textWrapped = wmlObjectFactory.createRT(text);
-		r.getContent().add(textWrapped);
-		text.setValue(nameOfDescAttribute);
-		// Create object for r
-		R r2 = wmlObjectFactory.createR();
-		p.getContent().add(r2);
-		// Create object for tab (wrapped in JAXBElement)
-		R.Tab rtab2 = wmlObjectFactory.createRTab();
-		JAXBElement<org.docx4j.wml.R.Tab> rtabWrapped2 = wmlObjectFactory.createRTab(rtab2);
-		r2.getContent().add(rtabWrapped2);
-
+				P p = writeLine(nameOfDescAttribute, "Times New Roman", 24);
+				body.getContent().add(p);
+				setPropertiesForTabs(p, 10206, 15450);
 	}
 	
 	public static void createTitle() {
 	
-	
-		    
 		    RFonts rFonts = wmlObjectFactory.createRFonts();
             rFonts.setAscii("Times New Roman");
             rFonts.setHAnsi("Times New Roman");
@@ -194,26 +292,15 @@ public class DocxRaportWriter {
 	                    pprbasespacing.setLineRule(org.docx4j.wml.STLineSpacingRule.AUTO);
 	            // Create object for r
 	            R r = wmlObjectFactory.createR(); 
+	            writeTextInP(r, "PROTOKÓŁ");
+	            setFontProperties(r, "Times New Roman", 28);
 	            p.getContent().add( r); 
-	                // Create object for rPr
-	                RPr rpr = wmlObjectFactory.createRPr(); 
-	                r.setRPr(rpr); 
-	                
-	                
-	                    // Create object for sz
-	                    HpsMeasure hpsmeasure2 = wmlObjectFactory.createHpsMeasure(); 
-	                    rpr.setSz(hpsmeasure2); 
-	                        hpsmeasure2.setVal( BigInteger.valueOf( 28) ); 
+	       
 	                    // Create object for b
 	                    BooleanDefaultTrue booleandefaulttrue2 = wmlObjectFactory.createBooleanDefaultTrue(); 
-	                    rpr.setB(booleandefaulttrue2); 
-	                    
-	                    rpr.setRFonts(rFonts);
-	                // Create object for t (wrapped in JAXBElement) 
-	                Text text = wmlObjectFactory.createText(); 
-	                JAXBElement<org.docx4j.wml.Text> textWrapped = wmlObjectFactory.createRT(text); 
-	                r.getContent().add( textWrapped); 
-	                    text.setValue( "PROTOKÓŁ"); 
+	                    r.getRPr().setB(booleandefaulttrue2);	                    
+	                   
+	          
 	        // Create object for p
 	        P p2 = wmlObjectFactory.createP(); 
 	        body.getContent().add( p2); 
@@ -354,6 +441,7 @@ public class DocxRaportWriter {
 	                    // Create object for sz
 	                    HpsMeasure hpsmeasure9 = wmlObjectFactory.createHpsMeasure(); 
 	                    rpr5.setSz(hpsmeasure9); 
+	                    rpr5.setRFonts(rFonts);
 	                        hpsmeasure9.setVal( BigInteger.valueOf( 24) ); 
 	                // Create object for t (wrapped in JAXBElement) 
 	                Text text4 = wmlObjectFactory.createText(); 
@@ -399,7 +487,6 @@ public class DocxRaportWriter {
       CTColumns columns = wmlObjectFactory.createCTColumns(); 
       sectpr.setCols(columns); 
           columns.setSpace( BigInteger.valueOf( 708) ); 
-		
 	}
 
 	public static void mergeCellsVertically(Tbl tbl, int col, int fromRow, int toRow) {
@@ -495,58 +582,6 @@ public class DocxRaportWriter {
 		return result;
 	}
 
-	public int createDocument1() {
-		WordprocessingMLPackage wordPackage = null;
-		File exportFile = new File("raport.docx");
-		MainDocumentPart mainDocumentPart = null;
-		try {
-			wordPackage = WordprocessingMLPackage.createPackage(PageSizePaper.A4, true);
-			mainDocumentPart = wordPackage.getMainDocumentPart();
-			mainDocumentPart.addStyledParagraphOfText("Title", "Raport badania KW");
-
-		} catch (InvalidFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		ObjectFactory factory = Context.getWmlObjectFactory();
-		P p = (P) factory.createP();
-		int writableWidthTwips = wordPackage.getDocumentModel().getSections().get(0).getPageDimensions()
-				.getWritableWidthTwips();
-		int columnNumber = 3;
-		Tbl tbl = TblFactory.createTable(3, 3, writableWidthTwips / columnNumber);
-
-		List<Object> rows = tbl.getContent();
-		for (Object row : rows) {
-			Tr tr = (Tr) row;
-			List<Object> cells = tr.getContent();
-			for (Object cell : cells) {
-				Tc td = (Tc) cell;
-				td.getContent().add(p);
-			}
-		}
-		for (int i = 0; i < 1; i++) {
-			Tr tr = (Tr) rows.get(i);
-			Tc hMergedCell = (Tc) createTableCellGspan(wordPackage, null, 2);
-			TblWidth tbWidth = new TblWidth();
-			tbWidth.setW(new BigInteger("" + (writableWidthTwips / columnNumber) * 2));
-			tbWidth.setType(TblWidth.TYPE_DXA);
-			hMergedCell.getTcPr().setTcW(tbWidth);
-
-			tr.getContent().set(0, hMergedCell);
-			tr.getContent().remove(1);
-
-		}
-		mainDocumentPart.getContent().add(tbl);
-
-		try {
-			wordPackage.save(exportFile);
-		} catch (Docx4JException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
 	public static Tc createTableCellGspan(WordprocessingMLPackage wordMLPackage, P p, int gridspan) {
 		ObjectFactory factory = Context.getWmlObjectFactory();
 		org.docx4j.wml.Tc tc = factory.createTc();
@@ -588,29 +623,3 @@ public class DocxRaportWriter {
 		}
 	}
 }
-/*
- * Horizontal merge public static Tc
- * createTableCellGspan(WordprocessingMLPackage wordMLPackage, P p, int
- * gridspan) { org.docx4j.wml.Tc tc = factory.createTc(); org.docx4j.wml.TcPr
- * tcpr = factory.createTcPr(); tc.setTcPr(tcpr); CTVerticalJc valign =
- * factory.createCTVerticalJc(); valign.setVal(STVerticalJc.TOP);
- * tcpr.setVAlign(valign); org.docx4j.wml.TcPrInner.GridSpan gspan =
- * factory.createTcPrInnerGridSpan(); gspan.setVal(new BigInteger("" +
- * gridspan)); tcpr.setGridSpan(gspan); tc.getEGBlockLevelElts().add(p); return
- * tc; }
- */
-
-/*
- * Horiznotal merge public static Tc
- * createTableCellVMerge(WordprocessingMLPackage wordMLPackage, P p, String
- * vMerge) { org.docx4j.wml.Tc tc = factory.createTc(); org.docx4j.wml.TcPr tcpr
- * = factory.createTcPr(); tc.setTcPr(tcpr); CTVerticalJc valign =
- * factory.createCTVerticalJc(); valign.setVal(STVerticalJc.TOP);
- * tcpr.setVAlign(valign);
- * 
- * org.docx4j.wml.TcPrInner.VMerge vm = factory.createTcPrInnerVMerge();
- * vm.setVal(vMerge); tcpr.setVMerge(vm);
- * 
- * tc.getEGBlockLevelElts().add(p); return tc; }
- * 
- */
