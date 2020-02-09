@@ -1,3 +1,5 @@
+tests\ParseKWDataSectionIIIUTest.class
 tests\ParseKWDataSectionIUTest.class
+tests\DocxRaportWriterUTest.class
 tests\OwnerProducerUTest.class
 tests\ParseKWDataSectionIITest.class

@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import static org.hamcrest.Matchers.*;
 
+import java.io.File;
 import java.text.ParseException;
 
 import org.apache.commons.lang3.time.DateUtils;
@@ -20,7 +21,9 @@ public class ParseKWDataSectionIIIUTest {
 	@BeforeClass
 
 	public static void prepareStartingConditions() {
-		parse = new ParseKWData("C:\\Users\\Administrator\\Desktop\\dzial3KW.html");
+		File file = new File("C:\\Users\\Administrator\\Desktop\\dzial3KW.html");
+		parse = new ParseKWData(file);
+		
 		parse.parse(3);
 		
 	}

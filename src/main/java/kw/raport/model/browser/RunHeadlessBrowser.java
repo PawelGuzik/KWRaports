@@ -9,6 +9,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 
 import io.github.bonigarcia.wdm.ChromeDriverManager;
+import kw.raport.model.browser.utils.Buttons;
+import kw.raport.model.emailSender.SendAttachment;
 
 public class RunHeadlessBrowser {
 	private WebDriver driver;
@@ -70,7 +72,10 @@ public class RunHeadlessBrowser {
 		}
 		
 		Thread.sleep(3111);
-		WebElement element = driver.findElement(By.name("przyciskWydrukZwykly"));
+		
+		//button[@name='przyciskWydrukZwykly']
+		//WebElement element = driver.findElement(By.name("przyciskWydrukZwykly"));
+		WebElement element = driver.findElement(By.xpath(Buttons.ACTKW.getXPath()));
 
 		Actions actions = new Actions(driver);
 
@@ -84,10 +89,27 @@ public class RunHeadlessBrowser {
 		
 	//	WebElement elementSec2 = driver.findElement(By.xpath("//input[@value='Dział II']"));
 	//	actions.moveToElement(elementSec2).click().perform();
-		WebElement elementSec3 = driver.findElement(By.xpath("//input[@value='Dział III']"));
-		actions.moveToElement(elementSec3).click().perform();
-		result = driver.getPageSource().toString();
+	//	WebElement elementSec3 = driver.findElement(By.xpath(Buttons.SEC1O.getXPath()));
+	//	actions.moveToElement(elementSec3).click().perform();
+	//	result = driver.getPageSource().toString();
+		
 		return result;
 
 	}
+	//TODO
+	//Napisać metody do przetworzenia wszystkich działow na raz
+	
+	public String goToSection(Buttons button) {
+		
+		String page;
+		Actions actions = new Actions(driver);
+		
+		WebElement elementSec2 = driver.findElement(By.xpath(button.getXPath()));
+		actions.moveToElement(elementSec2).click().perform();
+		page =  driver.getPageSource().toString();
+		return page;
+		
+	}
+	
+	
 }

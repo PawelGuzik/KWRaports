@@ -27,12 +27,23 @@ public class ParseKWData {
 	private RaportData raportData;
 	//Represents web page as Document
 	private Document doc;
+	
+	public ParseKWData() {
+		raportData = new RaportData();
+	}
 
-	public ParseKWData(String htmlFileToParse) {
-		setInputPage(htmlFileToParse);
+	public ParseKWData(File htmlFileToParse) {
+		setInputPageWithFile(htmlFileToParse);
 		raportData = new RaportData();
 
 	}
+	
+	public ParseKWData(String stringHtmlToParse) {
+		setInputPageWithString(stringHtmlToParse);
+		raportData= new RaportData();
+		
+	}
+	
 
 	// Processes all the data of a particular KW into RaportData object
 	public void parse(int sectionNumber) {
@@ -242,7 +253,7 @@ public class ParseKWData {
 			limitedRightsList.add(limitedRights);
 		}
 		raportData.setLimitedRights(limitedRightsList);
-		System.out.println(findValuesOfAtributesInCurrentlyOpenSection("Rodzaj wpisu", 0).get(0).toString());
+		//System.out.println(findValuesOfAtributesInCurrentlyOpenSection("Rodzaj wpisu", 0).get(0).toString());
 
 	}
 
@@ -279,13 +290,21 @@ public class ParseKWData {
 		return raportData;
 	}
 
-	public void setInputPage(String htmlFileToParse) {
-		this.inputPage = new File(htmlFileToParse);
+	public void setInputPageWithFile(File htmlFileToParse) {
+		this.inputPage = htmlFileToParse;
 		try {
 			doc = Jsoup.parse(inputPage, "UTF-8");
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void setInputPageWithString(String htmlPage) {
+		if(doc!=null) {
+			doc=null;
+		}
+		doc = Jsoup.parse(htmlPage);
 	}
 
 }

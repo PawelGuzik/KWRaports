@@ -2,7 +2,13 @@ package kw.raport.model.raportData;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import kw.raport.model.raportData.limitedRights.LimitedRights;
 import kw.raport.model.raportData.owner.Owner;
@@ -15,12 +21,13 @@ public class RaportData {
 	private String county;
 	private String landRegistryUnit;
 	private String registrationPrecinct;
+	private String registrationPrecinctNumber;
 	private String courthouse;
 	private Date creationDate;
 	private String landAndMortgageRegisterNumber;
 	private List<String> plotNumbers;
 	private String realEstateArea;
-	
+
 	private String propertyType;
 	private List<EntryBasis> mapInformation;
 	private List<Owner> owners;
@@ -45,7 +52,7 @@ public class RaportData {
 		}
 
 	}
-	
+
 	public void addPlotOfLandFromList(List<String> plotsNumbers) {
 		for (String plotNumber : plotsNumbers) {
 			addPlotOfLand(plotNumber);
@@ -77,7 +84,7 @@ public class RaportData {
 		return voivodenship;
 	}
 
-	public void serVoivodenship(String voivodenship) {
+	public void setVoivodenship(String voivodenship) {
 		this.voivodenship = voivodenship;
 	}
 
@@ -157,6 +164,14 @@ public class RaportData {
 		return mapInformation;
 	}
 
+	public String getMapInformationAsString() {
+		String result = "";
+		for (EntryBasis information : mapInformation) {
+			result += information.asString() + "\n";
+		}
+		return result;
+	}
+
 	public void setMapInformation(List<EntryBasis> mapInformation) {
 		this.mapInformation = mapInformation;
 	}
@@ -213,8 +228,79 @@ public class RaportData {
 		return plotOfLandList;
 	}
 
+	public String getPlotOfLandNumbersAsString() {
+		String result = "";
+		if (plotOfLandList != null && plotOfLandList.size() > 0) {
+			for (PlotOfLand plotOfLand : plotOfLandList) {
+				
+				if (plotOfLandList.indexOf(plotOfLand) < (plotOfLandList.size()-1)) {
+					result += plotOfLand.getNumber() + ", ";
+				} else {
+					result += plotOfLand.getNumber();
+				}
+			}
+		}
+		return result;
+	}
+	public enum Description{
+		WAY_TO_USE,
+		LOCATION;
+		
+		Description() {}
+
+	}
+
+	public String getDescriptionForGroupedPlotsOfLand(Description description) {
+		String result = "";
+
+		Map<String, String> descriptionMap = new HashMap<String, String>();
+		if (plotOfLandList != null && plotOfLandList.size() > 0) {
+			if(description == Description.WAY_TO_USE) {
+			mapPlotOfLandNumberToWayToUse(descriptionMap);
+			}
+			if(description == Description.LOCATION) {
+				mapPlotOfLandNumberToLocation(descriptionMap);
+			}
+			Map<String, List<String>> result1 = descriptionMap.entrySet().stream().collect(Collectors
+					.groupingBy(Map.Entry::getValue, Collectors.mapping(Map.Entry::getKey, Collectors.toList())));
+			for(Map.Entry<String, List<String>> entry : result1.entrySet()) {
+				
+				String plotsList =entry.getValue().stream().map(Object::toString).collect(Collectors.joining(", "));
+				result = result + entry.getKey() + " (" + plotsList + ")";
+			}
+			
+		}
+		return result;
+
+	}
+
+	private void mapPlotOfLandNumberToWayToUse(Map<String, String> wayToUseMap) {
+		for (PlotOfLand plotOfLand : plotOfLandList) {
+
+			wayToUseMap.put(plotOfLand.getNumber(), plotOfLand.getWayToUse());
+
+		}
+	}
+	
+	private void mapPlotOfLandNumberToLocation(Map<String, String> locationMap) {
+		for (PlotOfLand plotOfLand : plotOfLandList) {
+			
+			locationMap.put(plotOfLand.getNumber(), plotOfLand.getLocation());
+		
+		}
+	}
+	
+
 	public void setPlotOfLandList(List<PlotOfLand> plotOfLandList) {
 		this.plotOfLandList = plotOfLandList;
+	}
+
+	public String getRegistrationPrecinctNumber() {
+		return registrationPrecinctNumber;
+	}
+
+	public void setRegistrationPrecinctNumber(String registrationPrecinctNumber) {
+		this.registrationPrecinctNumber = registrationPrecinctNumber;
 	}
 
 	@Override
@@ -239,6 +325,11 @@ public class RaportData {
 		if (registrationPrecinct != null) {
 			builder.append("registrationPrecinct=");
 			builder.append(registrationPrecinct);
+			builder.append(", ");
+		}
+		if (registrationPrecinctNumber != null) {
+			builder.append("registrationPrecinctNumber=");
+			builder.append(registrationPrecinctNumber);
 			builder.append(", ");
 		}
 		if (courthouse != null) {

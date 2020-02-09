@@ -2,6 +2,7 @@ package tests;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.text.ParseException;
 
 import org.apache.commons.lang3.time.DateUtils;
@@ -21,7 +22,8 @@ static ParseKWData parse;
 	
 	@BeforeClass
 	public static void prepareStartingConditions() {
-		parse = new ParseKWData("C:\\Users\\Administrator\\Desktop\\dzial2KW.html");
+		File file = new File("C:\\Users\\Administrator\\Desktop\\dzial2KW.html");
+		parse = new ParseKWData(file);
 		parse.parse(2);
 	}
 	

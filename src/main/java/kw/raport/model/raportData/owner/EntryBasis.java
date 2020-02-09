@@ -1,12 +1,15 @@
 package kw.raport.model.raportData.owner;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.apache.commons.lang3.time.DateUtils;
 
 public class EntryBasis {
 	private String title;
 	private String rep;
 	private Date creationDate;
-	
+
 	public EntryBasis(String title) {
 		this.title = title;
 	}
@@ -35,6 +38,28 @@ public class EntryBasis {
 		this.creationDate = creationDate;
 	}
 
+	// Simple String representation for reporting purpose
+	public String asString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		StringBuilder result = new StringBuilder();
+		result.append(" - ");
+		if(title != null) {
+			result.append(title);
+			result.append(", ");
+		}
+		if(rep != null) {
+			result.append(rep);
+			result.append(", ");
+		}
+		if (creationDate != null) {
+			result.append(sdf.format(creationDate));
+			result.append(";");
+		}
+		result.append("<w:br/>");
+		
+		return result.toString();
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -56,7 +81,5 @@ public class EntryBasis {
 		builder.append("]");
 		return builder.toString();
 	}
-	
-	
 
 }
