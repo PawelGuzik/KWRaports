@@ -55,7 +55,7 @@ public class EntryBasis {
 			result.append(sdf.format(creationDate));
 			result.append(";");
 		}
-		result.append("<w:br/>");
+		
 		
 		return result.toString();
 	}
