@@ -22,7 +22,6 @@ public class RunHeadlessBrowser {
 	}
 
 	public void callResponseFraoExternalService() {
-		
 	}
 
 	//  Runs Chrome browser in headless mode
