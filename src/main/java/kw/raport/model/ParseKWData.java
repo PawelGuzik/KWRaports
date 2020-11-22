@@ -142,7 +142,7 @@ public class ParseKWData {
 
 			if (atributeName.text().contains("Numer działki")) {
 				number = atributeName.nextElementSibling().text();
-				location = atributeName.parent().nextElementSibling().child(3).text();
+				//location = atributeName.parent().nextElementSibling().child(3).text();
 				wayToUse = atributeName.parent().nextElementSiblings().get(1).child(1).text();
 			}
 
@@ -305,6 +305,7 @@ public class ParseKWData {
 			doc=null;
 		}
 		doc = Jsoup.parse(htmlPage);
+		
 	}
 
 }

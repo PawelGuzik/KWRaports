@@ -46,6 +46,9 @@ import org.docx4j.wml.Tr;
 
 import kw.raport.model.raportData.RaportData;
 import kw.raport.model.raportData.RaportData.Description;
+import kw.raport.model.raportData.limitedRights.LimitedRights;
+import kw.raport.model.raportData.owner.EntryBasis;
+import kw.raport.model.raportData.owner.Owner;
 
 import org.docx4j.wml.Tabs;
 
@@ -126,10 +129,18 @@ public class DocxRaportWriter {
 			writeTextInCell("Imię i nazwisko, imiona rodziców lub nazwa osoby prawnej, adres", tbl, 1, 7,
 					JcEnumeration.CENTER);
 			writeTextInCell("8", tbl, 2, 7, JcEnumeration.CENTER);
+			
+			for (Owner owner : raportData.getOwners()) {
+				writeTextInCell(owner.asString(), tbl, 3, 7, JcEnumeration.CENTER);
+			}
+
 
 			writeTextInCell("Podstawa ustalenia danych wym.", tbl, 1, 8, JcEnumeration.CENTER);
 			writeTextInCell("w kol. 8", tbl, 1, 8, JcEnumeration.CENTER);
 			writeTextInCell("9", tbl, 2, 8, JcEnumeration.CENTER);
+			for(EntryBasis ownerEntryBasis : raportData.getOwnerEntryBasis() ) {
+				writeTextInCell(ownerEntryBasis.asString(), tbl, 3, 8, JcEnumeration.CENTER);
+			}
 
 			writeTextInCell("DZIAŁ III", tbl, 0, 9, JcEnumeration.CENTER);
 			writeTextInCell("Rodzaj ograniczonych", tbl, 1, 9, JcEnumeration.CENTER);
@@ -137,6 +148,16 @@ public class DocxRaportWriter {
 			writeTextInCell("-----------------------", tbl, 1, 9, JcEnumeration.CENTER);
 			writeTextInCell("Podstawa wpisu", tbl, 1, 9, JcEnumeration.CENTER);
 			writeTextInCell("10", tbl, 2, 9, JcEnumeration.CENTER);
+			if(raportData.getLimitedRights() != null) {
+				for(LimitedRights limitedRights : raportData.getLimitedRights()) {
+					writeTextInCell(limitedRights.asString(), tbl, 3, 9, JcEnumeration.CENTER);
+				}
+			}
+			if(raportData.getLimitedRightsEntryBasis() !=null) {
+				for(EntryBasis limitedRightsEntryBasis : raportData.getLimitedRightsEntryBasis()) {
+					writeTextInCell(limitedRightsEntryBasis.asString(), tbl, 3, 9, JcEnumeration.CENTER);
+				}
+			}
 
 			writeTextInCell("UWAGI", tbl, 0, 10, JcEnumeration.CENTER);
 			writeTextInCell("11", tbl, 2, 10, JcEnumeration.CENTER);
@@ -146,6 +167,7 @@ public class DocxRaportWriter {
 			File exportFile=  new File("rap.docx");
 
 			mainDocumentPart.getContent().add(tbl);
+			createFooter(raportData);
 			//wordPackage.save(outStream, Docx4J.FLAG_SAVE_ZIP_FILE);
 			wordPackage.save(exportFile);
 			
@@ -159,6 +181,7 @@ public class DocxRaportWriter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		return outStream;
 	}
 
@@ -329,8 +352,15 @@ public class DocxRaportWriter {
 
 		return p;
 	}
+	
+	private static void createFooter(RaportData raportData) {
+		createParagraphWithText("Wykonawca: " + raportData.getAuthor(), JcEnumeration.RIGHT, 0, "Times New Roman", 24);
+		createParagraphWithText("Nr upr. zawod: " + raportData.getprofessionalQualificationsNumber(), JcEnumeration.RIGHT, 0, "Times New Roman", 24);
+		createParagraphWithText("Data:...............................................................", JcEnumeration.RIGHT, 0, "Times New Roman", 24);
 
-	public static void createTitle(RaportData raportData) {
+	}
+
+	private static void createTitle(RaportData raportData) {
 		createParagraphWithText("PROTOKÓŁ", JcEnumeration.CENTER, 360, "Times New Roman", 28);
 
 		createParagraphWithText("badania ksiąg wieczystych (dla nieruchomości gruntowych)", JcEnumeration.CENTER, 360,
@@ -347,7 +377,7 @@ public class DocxRaportWriter {
 		writeTabInP(r4);
 
 		// Create object for p
-		P p4 = createParagraphWithText("Data:", JcEnumeration.LEFT, 360, "Times New Roman", 24);
+		P p4 = createParagraphWithText("Data: " + raportData.getCreationDateSimple(), JcEnumeration.LEFT, 360, "Times New Roman", 24);
 
 		// Create object for pPr
 		PPr ppr4 = p4.getPPr();
@@ -385,7 +415,7 @@ public class DocxRaportWriter {
 		columns.setSpace(BigInteger.valueOf(708));
 	}
 
-	public static void mergeCellsVertically(Tbl tbl, int col, int fromRow, int toRow) {
+	private static void mergeCellsVertically(Tbl tbl, int col, int fromRow, int toRow) {
 		if (col < 0 || fromRow < 0 || toRow < 0) {
 			return;
 		}
@@ -408,7 +438,7 @@ public class DocxRaportWriter {
 		}
 	}
 
-	public static TcPr getTcPr(Tc tc) {
+	private static TcPr getTcPr(Tc tc) {
 		TcPr tcPr = tc.getTcPr();
 		if (tcPr == null) {
 			tcPr = new TcPr();
@@ -417,7 +447,7 @@ public class DocxRaportWriter {
 		return tcPr;
 	}
 
-	public static Tc getTc(Tbl tbl, int row, int cell) {
+	private static Tc getTc(Tbl tbl, int row, int cell) {
 		if (row < 0 || cell < 0) {
 			return null;
 		}
@@ -432,7 +462,7 @@ public class DocxRaportWriter {
 		return tcList.get(cell);
 	}
 
-	public static List<Tc> getTrAllCell(Tr tr) {
+	private static List<Tc> getTrAllCell(Tr tr) {
 		List<Object> objList = getAllElementFromObject(tr, Tc.class);
 		List<Tc> tcList = new ArrayList<Tc>();
 		if (objList == null) {
@@ -447,7 +477,7 @@ public class DocxRaportWriter {
 		return tcList;
 	}
 
-	public static List<Tr> getTblAllTr(Tbl tbl) {
+	private static List<Tr> getTblAllTr(Tbl tbl) {
 		List<Object> objList = getAllElementFromObject(tbl, Tr.class);
 		List<Tr> trList = new ArrayList<Tr>();
 		if (objList == null) {
@@ -462,7 +492,7 @@ public class DocxRaportWriter {
 		return trList;
 	}
 
-	public static List<Object> getAllElementFromObject(Object obj, Class<?> toSearch) {
+	private static List<Object> getAllElementFromObject(Object obj, Class<?> toSearch) {
 		List<Object> result = new ArrayList<Object>();
 		if (obj instanceof JAXBElement) {
 			obj = ((JAXBElement<?>) obj).getValue();
@@ -478,7 +508,7 @@ public class DocxRaportWriter {
 		return result;
 	}
 
-	public static Tc createTableCellGspan(WordprocessingMLPackage wordMLPackage, P p, int gridspan) {
+	private static Tc createTableCellGspan(WordprocessingMLPackage wordMLPackage, P p, int gridspan) {
 		ObjectFactory factory = Context.getWmlObjectFactory();
 		org.docx4j.wml.Tc tc = factory.createTc();
 		org.docx4j.wml.TcPr tcpr = factory.createTcPr();
@@ -493,7 +523,7 @@ public class DocxRaportWriter {
 		return tc;
 	}
 
-	public static void mergeCellsHorizontal(Tbl tbl, int row, int fromCell, int toCell) {
+	private static void mergeCellsHorizontal(Tbl tbl, int row, int fromCell, int toCell) {
 		if (row < 0 || fromCell < 0 || toCell < 0) {
 			return;
 		}

@@ -30,6 +30,23 @@ public class LimitedRights {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	//For the purpose of producing reports
+	public String asString() {
+		StringBuilder builder = new StringBuilder();
+	
+		if (rightsType != null) {
+			builder.append("Typ prawa=");
+			builder.append(rightsType);
+			builder.append(", ");
+		}
+		if (content != null) {
+			builder.append("treść=");
+			builder.append(content);
+		}
+	
+		return builder.toString();
+	}
+	
 
 	@Override
 	public String toString() {

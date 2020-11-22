@@ -10,7 +10,6 @@ import org.openqa.selenium.interactions.Actions;
 
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import kw.raport.model.browser.utils.Buttons;
-import kw.raport.model.emailSender.SendAttachment;
 
 public class RunHeadlessBrowser {
 	private WebDriver driver;
@@ -60,6 +59,9 @@ public class RunHeadlessBrowser {
 		System.out.println("Po klikni�ciu wyszukaj wczytano stron�: " + driver.getTitle().toString()
 				+ "\n �r�d�o strony" + firstResult);
 
+		if(firstResult.contains(" nie została odnaleziona.")) {
+			return "Księga o podanym numerze nie została odnaleziona w serwisie ekw.ms.gov.pl";
+		}
 		while (!firstResult.contains("przyciskWydrukZwykly")) {
 			Thread.sleep(RandomUtils.nextInt(950, 29000));
 

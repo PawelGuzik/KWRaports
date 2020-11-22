@@ -3,10 +3,14 @@ C:\Users\Administrator\workspaceRedHatJBoss\KW_Raport\KWRaports\src\main\java\kw
 C:\Users\Administrator\workspaceRedHatJBoss\KW_Raport\KWRaports\src\main\java\kw\raport\model\emailSender\SendAttachment.java
 C:\Users\Administrator\workspaceRedHatJBoss\KW_Raport\KWRaports\src\main\java\kw\raport\model\raportData\limitedRights\LimitedRights.java
 C:\Users\Administrator\workspaceRedHatJBoss\KW_Raport\KWRaports\src\main\java\kw\raport\model\raportData\plotOfLand\PlotOfLand.java
+C:\Users\Administrator\workspaceRedHatJBoss\KW_Raport\KWRaports\src\main\java\kw\raport\model\servlet\ProcessRaportServlet.java
+C:\Users\Administrator\workspaceRedHatJBoss\KW_Raport\KWRaports\src\main\java\kw\raport\model\browser\utils\validation\CompatibilityRequired.java
 C:\Users\Administrator\workspaceRedHatJBoss\KW_Raport\KWRaports\src\main\java\kw\raport\model\docxWriter\DocxRaportWriter.java
+C:\Users\Administrator\workspaceRedHatJBoss\KW_Raport\KWRaports\src\main\java\kw\raport\model\servlet\ChooseMapInfoServletTest.java
 C:\Users\Administrator\workspaceRedHatJBoss\KW_Raport\KWRaports\src\main\java\kw\raport\model\servlet\RaportServlet.java
 C:\Users\Administrator\workspaceRedHatJBoss\KW_Raport\KWRaports\src\main\java\kw\raport\model\utils\OwnerProducer.java
 C:\Users\Administrator\workspaceRedHatJBoss\KW_Raport\KWRaports\src\main\java\kw\raport\model\raportData\RaportData.java
+C:\Users\Administrator\workspaceRedHatJBoss\KW_Raport\KWRaports\src\main\java\kw\raport\model\utils\ContolNumberCalc.java
 C:\Users\Administrator\workspaceRedHatJBoss\KW_Raport\KWRaports\src\main\java\kw\raport\model\raportData\owner\EntryBasis.java
 C:\Users\Administrator\workspaceRedHatJBoss\KW_Raport\KWRaports\src\main\java\kw\raport\model\raportData\owner\Owner.java
 C:\Users\Administrator\workspaceRedHatJBoss\KW_Raport\KWRaports\src\main\java\kw\raport\model\raportData\entryInRegister\BasisForTheEntryInRegister.java

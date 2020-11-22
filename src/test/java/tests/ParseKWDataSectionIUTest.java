@@ -73,9 +73,7 @@ public class ParseKWDataSectionIUTest {
 	
 	@Test
 	public void shouldReturnBasisForTheEntryInRegister() throws ParseException {
-		for (int i =0; i<=8; i++) {
-			System.out.println("To ja " + parse.getRaportData().getMapInformation().get(i).getTitle().toString());
-		}
+	
 		
 		assertThat(parse.getRaportData().getMapInformation().size(), equalTo(9));
 

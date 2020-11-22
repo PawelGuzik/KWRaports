@@ -1,12 +1,10 @@
 package kw.raport.model.raportData;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import kw.raport.model.raportData.limitedRights.LimitedRights;
@@ -121,6 +119,11 @@ public class RaportData {
 
 	public Date getCreationDate() {
 		return creationDate;
+	}
+	
+	public String getCreationDateSimple() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return sdf.format(creationDate);
 	}
 
 	public void setCreationDate(Date creationDate) {
@@ -260,13 +263,13 @@ public class RaportData {
 			if(description == Description.LOCATION) {
 				mapPlotOfLandNumberToLocation(descriptionMap);
 			}
-			Map<String, List<String>> result1 = descriptionMap.entrySet().stream().collect(Collectors
-					.groupingBy(Map.Entry::getValue, Collectors.mapping(Map.Entry::getKey, Collectors.toList())));
-			for(Map.Entry<String, List<String>> entry : result1.entrySet()) {
+			//Map<String, List<String>> result1 = descriptionMap.entrySet().stream().collect(Collectors
+			//		.groupingBy(Map.Entry::getValue, Collectors.mapping(Map.Entry::getKey, Collectors.toList())));
+			/*for(Map.Entry<String, List<String>> entry : result1.entrySet()) {
 				
 				String plotsList =entry.getValue().stream().map(Object::toString).collect(Collectors.joining(", "));
 				result = result + entry.getKey() + " (" + plotsList + ")";
-			}
+			}*/		
 			
 		}
 		return result;

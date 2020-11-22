@@ -3,8 +3,6 @@ package kw.raport.model.raportData.owner;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.commons.lang3.time.DateUtils;
-
 public class EntryBasis {
 	private String title;
 	private String rep;

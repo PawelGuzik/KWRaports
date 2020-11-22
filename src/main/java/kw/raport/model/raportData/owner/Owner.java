@@ -63,6 +63,29 @@ public class Owner {
 	public void setSecondName(String secondName) {
 		this.secondName = secondName;
 	}
+	//For reporting purposes
+	public String asString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(" - ");
+		if (name != null) {
+			builder.append(name + " ");
+		}
+		if (surname != null) {
+			builder.append(surname + " ");
+		}
+		if (namesOfParents != null) {
+			builder.append("(");
+			builder.append(namesOfParents);
+			builder.append("), ");
+		}
+		if(numberOfPesel != 0) {
+		builder.append("PESEL: ");
+		builder.append(numberOfPesel);
+		}else {
+			builder.append("PESEL: -BRAK-");
+		}
+		return builder.toString();
+	}
 
 	//toString
 	@Override
