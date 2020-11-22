@@ -1,1 +1,1 @@
-web: java -cp target/classes:target/dependency/* kw.raport.model.servlet.RaportServlet
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* RaportServlet
