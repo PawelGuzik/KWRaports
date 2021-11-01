@@ -1,5 +1,7 @@
 package kw.raport.model.browser;
 
+import java.util.Collections;
+
 import org.apache.commons.lang3.RandomUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -27,12 +29,21 @@ public class RunHeadlessBrowser {
 	private void setUpBrowserSettings() {
 
 		ChromeDriverManager.chromedriver().setup();
-
+		
 		ChromeOptions chromeoptions = new ChromeOptions();
 
+		
+		chromeoptions.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
+		
+		chromeoptions.addArguments("--disable-blink-features");
+		chromeoptions.addArguments("--disable-blink-features=AutomationControlled");
+		chromeoptions.addArguments("--incognito", "--disable-blink-features=AutomationControlled");
+		chromeoptions.setExperimentalOption("useAutomationExtension", false);
+		chromeoptions.addArguments("--user-agent=\"Mozilla/5.0 (Windows Phone 10.0; Android 4.2.1; Microsoft; Lumia 640 XL LTE) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10166\"");
 		chromeoptions.addArguments("--headless");
-
 		driver = new ChromeDriver(chromeoptions);
+		
+		
 		
 	}
 
@@ -46,7 +57,7 @@ public class RunHeadlessBrowser {
 		
 		System.out.println("Wczytano stron�: " + driver.getTitle().toString());
 		
-		driver.findElement(By.id("kodWydzialu")).sendKeys(kodWydziału); 
+		driver.findElement(By.id("kodWydzialuInput")).sendKeys(kodWydziału); 
 
 		driver.findElement(By.id("numerKsiegiWieczystej")).sendKeys(numerKW);
 
