@@ -46,7 +46,7 @@ public class RunHeadlessBrowser {
 		
 		System.out.println("Wczytano stron�: " + driver.getTitle().toString());
 		
-		driver.findElement(By.id("kodWydzialuInput")).sendKeys(kodWydziału); 
+		driver.findElement(By.id("kodWydzialu")).sendKeys(kodWydziału); 
 
 		driver.findElement(By.id("numerKsiegiWieczystej")).sendKeys(numerKW);
 
